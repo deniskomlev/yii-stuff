@@ -1,0 +1,22 @@
+Options -Indexes +FollowSymlinks
+
+AddDefaultCharset utf-8
+
+#php_value default_charset utf-8
+#php_value date.timezone Europe/Moscow
+#php_value upload_max_filesize 20M
+#php_value post_max_size 20M
+
+RewriteEngine On
+
+#RewriteCond %{HTTP_HOST} !^example\.com$ [NC]
+#RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
+
+#RewriteCond %{HTTP_HOST} !^www\.example\.com$ [NC]
+#RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301]
+
+#RewriteBase /example/
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L,QSA]
