@@ -1,6 +1,6 @@
 <?php
 
-class Comment extends CActiveRecord
+class BlankModel extends CActiveRecord
 {
     /**
      * @var integer $id
