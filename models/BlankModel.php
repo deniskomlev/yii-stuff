@@ -59,6 +59,17 @@ class BlankModel extends CActiveRecord
         );
     }
 
+    public function beforeSave()
+    {
+        if (parent::beforeSave()) {
+            // your code
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public function afterDelete()
     {
         parent::afterDelete();
