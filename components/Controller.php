@@ -8,6 +8,7 @@ class Controller extends CController
     public $allowRobots = true;
     public $breadcrumbs = array();
     private $_assetsUrl;
+    private $_jsConfig = array();
 
     public function init()
     {
@@ -15,16 +16,16 @@ class Controller extends CController
         Yii::app()->clientScript->registerCssFile($this->getAssetsUrl() . '/bootstrap/css/bootstrap.min.css');
         Yii::app()->clientScript->registerScriptFile($this->getAssetsUrl() . '/bootstrap/js/bootstrap.min.js', CClientScript::POS_END);
         Yii::app()->clientScript->registerCssFile($this->getAssetsUrl() . '/css/main.css');
+
+        $this->setJsConfig(array(
+            'baseUrl' => Yii::app()->baseUrl,
+            'assetsUrl' => $this->getAssetsUrl(),
+        ));
     }
 
     protected function beforeRender($view)
     {
-        $config = array(
-            'baseUrl' => Yii::app()->baseUrl,
-            'assetsUrl' => $this->getAssetsUrl(),
-        );
-        $js = 'var config=' . json_encode($config) . ';';
-        Yii::app()->clientScript->registerScript('config', $js, CClientScript::POS_HEAD);
+        $this->registerJsConfig();
         return true;
     }
 
@@ -46,5 +47,18 @@ class Controller extends CController
             $this->_assetsUrl = Yii::app()->assetManager->publish($path, false, -1, YII_DEBUG);
         }
         return $this->_assetsUrl;
+    }
+
+    public function setJsConfig($config)
+    {
+        if (is_array($config)) {
+            $this->_jsConfig = CMap::mergeArray($this->_jsConfig, $config);
+        }
+    }
+
+    protected function registerJsConfig()
+    {
+        $js = 'var config=' . json_encode($this->_jsConfig) . ';';
+        Yii::app()->clientScript->registerScript('config', $js, CClientScript::POS_HEAD);
     }
 }
