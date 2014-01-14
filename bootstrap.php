@@ -19,6 +19,10 @@ else
 if (FRAMEWORK_PATH === false)
     exit('Framework path is incorrect.');
 
+// Make sure the assets directory exists
+if (!is_dir(dirname(__FILE__).'/assets'))
+    @mkdir(dirname(__FILE__).'/assets');
+
 // Set the locale and timezone
 date_default_timezone_set('Europe/Moscow');
 setlocale(LC_ALL, 'ru_RU.UTF-8');
