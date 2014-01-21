@@ -1,9 +1,11 @@
 <?php
 
+$minPhpVersion = '5.3';
+
 // Check system requirements
 if (!defined('CONSOLE')) {
-    if (version_compare(phpversion(), '5.4', '<'))
-        exit('This application requires PHP version 5.4 and higher (current is '.phpversion().').');
+    if (version_compare(phpversion(), $minPhpVersion, '<'))
+        exit('This application requires PHP version '.$minPhpVersion.' and higher (current is '.phpversion().').');
     if (!defined('CRYPT_BLOWFISH') || !CRYPT_BLOWFISH)
         exit('This application requires that PHP was compiled with Blowfish support for crypt().');
 }
