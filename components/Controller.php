@@ -9,6 +9,7 @@ class Controller extends CController
     public $breadcrumbs = array();
     private $_assetsUrl;
     private $_jsConfig = array();
+    private $_data = array();  // global data needed to be availiable in nested views
 
     public function init()
     {
@@ -47,6 +48,20 @@ class Controller extends CController
             $this->_assetsUrl = Yii::app()->assetManager->publish($path, false, -1, YII_DEBUG);
         }
         return $this->_assetsUrl;
+    }
+
+    public function data($param)
+    {
+        return isset($this->_data[$param])
+            ? $this->_data[$param]
+            : null;
+    }
+
+    public function setData($data)
+    {
+        if (is_array($data)) {
+            $this->_data = CMap::mergeArray($this->_data, $data);
+        }
     }
 
     public function setJsConfig($config)
