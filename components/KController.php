@@ -29,19 +29,22 @@ class Controller extends CController
 
     protected function beforeRender($view)
     {
-        $this->registerEnqueuedResources();
-        $this->registerJsConfig();
         return true;
     }
 
     protected function afterRender($view, &$output)
     {
-        if ($this->pageKeywords)
+        if ($this->pageKeywords) {
             Yii::app()->clientScript->registerMetaTag(CHtml::encode($this->pageKeywords), 'keywords');
-        if ($this->pageDescription)
+        }
+        if ($this->pageDescription) {
             Yii::app()->clientScript->registerMetaTag(CHtml::encode($this->pageDescription), 'description');
-        if (!$this->allowRobots)
+        }
+        if (!$this->allowRobots) {
             Yii::app()->clientScript->registerMetaTag('noindex,nofollow', 'robots');
+        }
+        $this->registerEnqueuedResources();
+        $this->registerJsConfig();
         return true;
     }
 
