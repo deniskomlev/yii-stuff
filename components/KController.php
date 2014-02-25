@@ -15,11 +15,13 @@ class KController extends CController
 
     public function init()
     {
-        Yii::app()->clientScript->registerCoreScript('jquery');
-        $this->enqueueCssFile(1, $this->getAssetsUrl() . '/libraries/bootstrap/css/bootstrap.min.css');
-        $this->enqueueScriptFile(1, $this->getAssetsUrl() . '/libraries/bootstrap/js/bootstrap.min.js', CClientScript::POS_END);
-        $this->enqueueCssFile(100, $this->getAssetsUrl() . '/css/main.css');
-        $this->enqueueScriptFile(100, $this->getAssetsUrl() . '/js/main.js', CClientScript::POS_END);
+        if (!Yii::app()->request->isAjaxRequest) {
+            Yii::app()->clientScript->registerCoreScript('jquery');
+            $this->enqueueCssFile(1, $this->getAssetsUrl() . '/libraries/bootstrap/css/bootstrap.min.css');
+            $this->enqueueScriptFile(1, $this->getAssetsUrl() . '/libraries/bootstrap/js/bootstrap.min.js', CClientScript::POS_END);
+            $this->enqueueCssFile(100, $this->getAssetsUrl() . '/css/main.css');
+            $this->enqueueScriptFile(100, $this->getAssetsUrl() . '/js/main.js', CClientScript::POS_END);
+        }
 
         $this->setJsConfig(array(
             'baseUrl' => Yii::app()->baseUrl,
