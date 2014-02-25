@@ -1,6 +1,6 @@
 <?php
 
-class Controller extends CController
+class KController extends CController
 {
     public $layout = '//layouts/main';
     public $pageDescription = '';

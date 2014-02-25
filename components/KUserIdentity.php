@@ -2,14 +2,19 @@
 
 class KUserIdentity extends CUserIdentity
 {
-    public $passwordRequired = true;
-    public $verifyByHash = false;
+    public  $modelName = 'User';
+    public  $usernameAttribute = 'username';
+    public  $passwordAttribute = 'password';
+    public  $passwordRequired = true;
+    public  $verifyByHash = false;
     private $_id;
 
     public function authenticate()
     {
-        $user = User::model()->findByAttributes(array(
-            'username' => strtolower($this->username)
+        $modelName = $this->modelName;
+
+        $user = $modelName::model()->findByAttributes(array(
+            $this->usernameAttribute => strtolower($this->username)
         ));
 
         if ($user === null) {
@@ -19,7 +24,7 @@ class KUserIdentity extends CUserIdentity
                 $this->errorCode = self::ERROR_NONE;
             } else {
                 $passwordCorrect = (!$this->verifyByHash)
-                    ? CPasswordHelper::verifyPassword($this->password, $user->password)
+                    ? CPasswordHelper::verifyPassword($this->password, $user->{$this->passwordAttribute})
                     : (strcmp($this->password, $user->password) === 0);
                 if (!$passwordCorrect) {
                     $this->errorCode = self::ERROR_PASSWORD_INVALID;
@@ -30,7 +35,7 @@ class KUserIdentity extends CUserIdentity
         }
 
         if ($this->errorCode === self::ERROR_NONE) {
-            $this->_id = $user->id;
+            $this->_id = $user->getId();
         }
 
         return $this->errorCode === self::ERROR_NONE;
